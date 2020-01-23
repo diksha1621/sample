@@ -3,52 +3,52 @@
 
 # Summary
 
-This pipeline uses modal coverage to calculate the rDNA copy number from whole genome sequence dataset. 
+### This pipeline uses modal coverage to calculate the rDNA copy number from whole genome sequence dataset. 
 
 freq_SD <- function(infile,colname,window_size = 1000,includerange=FALSE,br_start=0,br_end=10,br_by= 0.002,outfile=NA, write_to_file=FALSE)
 {
 
-**** reading in text file with seperators “ “ space ****
+### reading in text file with seperators “ “ space 
 
 chr <- read.table(infile, header = FALSE)
 
-**** naming the columns of the infile **** 
+### naming the columns of the infile 
 
 names(chr) <- c("GenomeID","BasePos","Depth")
 
-**** package required for rollmean function to work **** 
+### package required for rollmean function to work **** 
 
 library(zoo) 
 
-**** finding out the rollmean with Sliding window size of 100bp **** 
+### finding out the rollmean with Sliding window size of 100bp **** 
 
 swm <- rollmean(chr$Depth,window_size)
 
-**** forming a dataframe for the mean values **** 
+### forming a dataframe for the mean values **** 
 
 swmdf <- data.frame(y = swm)
 
-**** naming the coumn of the dataframe **** 
+### naming the coumn of the dataframe **** 
 
 colnames(swmdf) <- c(colname)
 
-****  Determining the break sequence **** 
+###  Determining the break sequence **** 
 
 br = seq(br_start,br_end,by=br_by)
 
-****  setting the last value of the range **** 
+### setting the last value of the range **** 
 
 br[length(br)+1]= max(swmdf)
 
-**** to get range format in the final text file ****  
+### to get range format in the final text file ****  
 
 ranges = paste(head(br,-1), br[-1], sep =" - ")
 
-****  started computing the frequency with no plot **** 
+### started computing the frequency with no plot **** 
 
 freq = hist(swmdf[[colname]], breaks = br, include.lowest= TRUE, plot=TRUE)
 
-**** writing the output to a text file **** 
+### writing the output to a text file **** 
 
 if(includerange)
   {
@@ -66,7 +66,7 @@ if(write_to_file)
 return(sample.freq)
 }
 
-****  passing the whole directory as an argument to the function to process and find the frequency for each “.txt” file and then write the final output to a final text file **** 
+### passing the whole directory as an argument to the function to process and find the frequency for each “.txt” file and then write the final output to a final text file **** 
 
 freq_SD_all <- function(directory, fpattern = "*.txt" ){
 files=list.files(directory,pattern = fpattern)

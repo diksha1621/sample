@@ -5,6 +5,9 @@
 
 ### This pipeline uses modal coverage to calculate the rDNA copy number from whole genome sequence dataset. 
 
+
+## Code 
+
 freq_SD <- function(infile,colname,window_size = 1000,includerange=FALSE,br_start=0,br_end=10,br_by= 0.002,outfile=NA, write_to_file=FALSE)
 {
 
